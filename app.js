@@ -12,14 +12,13 @@ var openid = "";
 
 wechat.retext(function(ok,req,res,result) {
 	openid = result.fromusername;
-	console.log(openid);
 	res.sendText("ok");
 });
 
 wechat.reclick({
 	"ser_book":
 	function(req,res,result) {
-		wechat.active(openid,"hello",function(ok,body) {
+		wechat.active([openid,openid,openid,openid],"hello",function(ok,body) {
 		console.log(body);
 		});
 		res.send("");
