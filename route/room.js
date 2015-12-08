@@ -145,7 +145,7 @@ var setrname = function(roomname) {
 	if(num >= game[roomname].length)
 	{
 		beginGame[roomname]["now"] = 0;
-		//	//发卡,标记卧底
+		pwords(roomname);
 	}
 	else
 	{
