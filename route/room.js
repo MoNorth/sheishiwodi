@@ -2,7 +2,7 @@ var room = {};
 var game = {};
 var beginGame = {};
 var wechat = require("wechat-node");
-
+var words = require("./words");
 var createRoom = function(req,res,result) {
 	var name = result.fromusername;
 	var roomname = hasRoom(name);
@@ -103,10 +103,46 @@ var hasrname = function(roomname,name) {
 	return true;
 }
 
+var pwordsfun =  function(roomname,rom,pnum) {
+	var num = beginGame[roomname]["now"];
+	if(num >= game[roomname].length)
+	{
+		beginGame[roomname]["now"] = 0;
+		//开始游戏下一步
+	}
+	else
+	{
+		var w = "";
+		if(num === pnum)
+			w = words[rom][1];
+		else
+			w = words[rom][0];
+		wechat.active(ame[roomname][num],w,function(ok,result) {
+			if(!ok)
+			{
+				console.log("特别大的error");
+				return;
+			}
+			beginGame[roomname]["now"] = num + 1;
+			pwordsfun(roomname,rom,pnum);
+		})
+	}
+}
+
+var pwords = function(roomname) {
+	var rom  = Math.ceil(Math.random() * game[roomname].length) - 1;
+	var pnum = Math.ceil(Math.random() * words.length) - 1;
+	pwordsfun(roomname,rom,pnum);
+}
+
+
+
+
+
 
 var setrname = function(roomname) {
 	var num = beginGame[roomname]["now"];
-	if(num >= game[roomname])
+	if(num >= game[roomname].length)
 	{
 		beginGame[roomname]["now"] = 0;
 		//	//发卡,标记卧底
