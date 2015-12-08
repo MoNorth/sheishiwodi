@@ -10,7 +10,7 @@ wechat.use("active");
 var openid = "";
 
 
-wechat.retext(function(req,res,result) {
+wechat.retext(function(ok,req,res,result) {
 	openid = result.fromusername;
 	res.sendText("ok");
 });
