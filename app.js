@@ -12,6 +12,7 @@ var openid = "";
 
 wechat.retext(function(ok,req,res,result) {
 	openid = result.fromusername;
+	console.log(openid);
 	res.sendText("ok");
 });
 
