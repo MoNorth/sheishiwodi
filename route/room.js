@@ -103,6 +103,36 @@ var hasrname = function(roomname,name) {
 	return true;
 }
 
+
+var speak = function(roomname) {
+	var num = beginGame[roomname]["now"];
+	if(num >= game[roomname].length)
+	{
+		beginGame[roomname]["now"] = 0;
+		//开始游戏下一步
+		console.log("下一步");
+	}
+	else
+	{
+		wechat.active(game[roomname][num],"请描述你的卡片内容",function(ok,result) {
+			if(!ok)
+			{
+				console.log("特别大的error");
+				return;
+			}
+			wechat.createSession({fromusername : game[roomname][num]},function(req,res,body) {
+				res.sendText("发送成功");
+				wechat.active(game[roomname],beginGame[roomname]["rname"][num] + ": " + body.content,function() {});
+				beginGame[roomname]["now"] = num + 1;
+				speak(roomname);
+			})
+		})
+	}
+}
+
+
+
+
 var pwordsfun =  function(roomname,rom,pnum) {
 	var num = beginGame[roomname]["now"];
 	if(num >= game[roomname].length)
