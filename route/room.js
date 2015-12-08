@@ -164,7 +164,7 @@ var isEnd = function(roomname,toupiaoname) {
 			if(beginGame[roomname]["rname"][i] === nameM.name)
 				break;
 		game[roomname].splice(i,1);
-		beginGame[roomname]["rname"]..splice(i,1);
+		beginGame[roomname]["rname"].splice(i,1);
 		if(game[roomname].length <= 2)
 		{
 			wechat.active(game[roomname],"游戏结束,卧底是"+beginGame[roomname]["wodi"],function() {});
