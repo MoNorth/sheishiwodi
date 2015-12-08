@@ -20,8 +20,8 @@ wechat.retext(function(ok,req,res,result) {
 wechat.reclick({
 	"create_room": room.createRoom,
 	"setin_room" : room.joinRoom,
-	"setout_room" : room.outRoom
-		
+	"setout_room" : room.outRoom,
+	"begin_game" : room.beginGame	
 },"");
 
 

@@ -167,3 +167,4 @@ var beginGame = function(req,res,result) {
 exports.createRoom = createRoom;
 exports.joinRoom = joinRoom;
 exports.outRoom = outRoom;
+exports.beginGame = beginGame;
