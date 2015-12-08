@@ -139,6 +139,7 @@ var pwordsfun =  function(roomname,rom,pnum) {
 	{
 		beginGame[roomname]["now"] = 0;
 		//开始游戏下一步
+		speak(roomname);
 	}
 	else
 	{
