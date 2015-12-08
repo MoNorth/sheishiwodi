@@ -110,7 +110,7 @@ var speak = function(roomname) {
 	{
 		beginGame[roomname]["now"] = 0;
 		//开始游戏下一步
-		console.log("下一步");
+		toupiao(roomname,false);
 	}
 	else
 	{
@@ -130,6 +130,98 @@ var speak = function(roomname) {
 	}
 }
 
+var hasH = function(roomname,name) {
+	for(var i in beginGame[roomname]["rname"])
+		if(beginGame[roomname]["rname"][i] === name)
+			return true;
+	return false;
+}
+
+
+var isEnd = function(roomname,toupiaoname) {
+	var nameM = "";
+	for(var i in toupiaoname)
+	{
+		if(!nameM)
+			nameM = {name:i,piaoshu:toupiaoname[i]};
+		else
+		{
+			if(nameM.piaoshu < toupiaoname[i])
+				nameM = {name:i,piaoshu:toupiaoname[i]};
+		}
+	}
+	if(nameM.name === beginGame[roomname]["wodi"])
+	{
+		wechat.active(game[roomname],"游戏结束,卧底是"+nameM.name,function() {});
+		delete game[roomname];
+		delete beginGame[roomname];
+	}
+	else
+	{
+		wechat.active(game[roomname],"游戏继续,"+nameM.name+"出局",function() {});
+		var i = 0 ;
+		for(i=0;i<beginGame[roomname]["rname"].length;i++)
+			if(beginGame[roomname]["rname"][i] === nameM.name)
+				break;
+		game[roomname].splice(i,1);
+		beginGame[roomname]["rname"]..splice(i,1);
+		if(game[roomname].length <= 2)
+		{
+			wechat.active(game[roomname],"游戏结束,卧底是"+beginGame[roomname]["wodi"],function() {});
+			delete game[roomname];
+			delete beginGame[roomname];
+		}
+		else
+		{
+			speak(roomname);
+		}
+	}
+}
+
+
+
+
+var toupiao = function(roomname,toupiaoname) {
+	if(!toupiaoname)
+		toupiaoname = {};
+	var num = beginGame[roomname]["now"];
+	if(num >= game[roomname].length)
+	{
+		beginGame[roomname]["now"] = 0;
+		//开始游戏下一步
+		isEnd(roomname,toupiaoname);
+	}
+	else
+	{
+		wechat.active(game[roomname][num],"请写出谁是卧底",function(ok,result) {
+			if(!ok)
+			{
+				console.log("特别大的error");
+				return;
+			}
+			wechat.createSession({fromusername : game[roomname][num]},function(req,res,body) {
+				var younames = body.content;
+				if(hasH(roomname,younames))
+				{
+					res.sendText("发送成功");
+					if(toupiaoname[younames])
+						toupiaoname[younames] ++;
+					else
+						toupiaoname[younames] = 1;
+					beginGame[roomname]["now"] = num + 1;
+					toupiao(roomname,toupiaoname);
+				}
+				else
+				{
+					res.sendText("没有这个人");
+					toupiao(roomname,toupiaoname);
+				}
+
+				
+			})
+		})
+	}
+}
 
 
 
@@ -163,6 +255,7 @@ var pwordsfun =  function(roomname,rom,pnum) {
 var pwords = function(roomname) {
 	var rom  = Math.ceil(Math.random() * game[roomname].length) - 1;
 	var pnum = Math.ceil(Math.random() * words.length) - 1;
+	beginGame[roomname]["wodi"] = beginGame[roomname]["rname"][pnum];
 	pwordsfun(roomname,rom,pnum);
 }
 
