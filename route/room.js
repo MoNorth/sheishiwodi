@@ -117,7 +117,7 @@ var pwordsfun =  function(roomname,rom,pnum) {
 			w = words[rom][1];
 		else
 			w = words[rom][0];
-		wechat.active(ame[roomname][num],w,function(ok,result) {
+		wechat.active(game[roomname][num],w,function(ok,result) {
 			if(!ok)
 			{
 				console.log("特别大的error");
