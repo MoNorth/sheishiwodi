@@ -112,6 +112,7 @@ var pwordsfun =  function(roomname,rom,pnum) {
 	}
 	else
 	{
+		console.log(num,pnum);
 		var w = "";
 		if(num === pnum)
 			w = words[rom][1];
