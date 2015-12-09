@@ -93,6 +93,8 @@ var outRoom = function(req,res,result) {
 		if(name === roomname)
 		{
 			res.sendText("你是房主,已解散该房间");
+			delete roomName[roomName[name]];
+			delete roomName[name];
 			delete room[roomname];
 		}
 		else
