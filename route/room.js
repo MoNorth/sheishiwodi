@@ -2,6 +2,7 @@ var room = {};
 var game = {};
 var beginGame = {};
 var roomName = {};
+var roomHuName = {};
 var wechat = require("wechat-node");
 var words = require("./words");
 
@@ -25,7 +26,7 @@ var createRoom = function(req,res,result) {
 			var roomHName = body.content;
 			res.sendText("快把你的房间名 " + roomHName + ",推荐给朋友吧");
 			roomName[roomHName] = body.fromusername;
-			roomName[body.fromusername] = roomHName;
+			roomHuName[body.fromusername] = roomHName;
 			console.log(body.fromusername + "成立了房间" + roomHName);
 		})
 
@@ -95,8 +96,8 @@ var outRoom = function(req,res,result) {
 		if(name === roomname)
 		{
 			res.sendText("你是房主,已解散该房间");
-			delete roomName[roomName[name]];
-			delete roomName[name];
+			delete roomName[roomHuName[name]];
+			delete roomHuName[name];
 			delete room[roomname];
 		}
 		else
@@ -344,8 +345,8 @@ var beginGame = function(req,res,result) {
 		return;
 	}
 	res.send("");
-	delete roomName[roomName[name]];
-	delete roomName[name];
+	delete roomName[roomHuName[name]];
+	delete roomHuName[name];
 	game[roomname] = room[roomname];
 	delete room[roomname];
 	beginGame[roomname] = {};
@@ -365,9 +366,16 @@ var beginGame = function(req,res,result) {
 	//只剩两人,游戏结束
 }
 
+var writeRoom = function(req,res,result) {
+	var str = "";
+	for(var i in roomName)
+		str += i + "\n";
+	res.sendText(str);
+}
 
 
 exports.createRoom = createRoom;
 exports.joinRoom = joinRoom;
 exports.outRoom = outRoom;
 exports.beginGame = beginGame;
+exports.writeRoom = writeRoom;
