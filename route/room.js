@@ -254,9 +254,15 @@ var pwordsfun =  function(roomname,rom,pnum) {
 	}
 }
 
+
+
+/**
+ * 高校随机数
+ */
+
 var pwords = function(roomname) {
-	var rom  = Math.ceil(Math.random() * game[roomname].length) - 1;
-	var pnum = Math.ceil(Math.random() * words.length) - 1;
+	var pnum  = Math.ceil(Math.random() * game[roomname].length) - 1;
+	var rom = Math.ceil(Math.random() * words.length) - 1;
 	beginGame[roomname]["wodi"] = beginGame[roomname]["rname"][pnum];
 	pwordsfun(roomname,rom,pnum);
 }
