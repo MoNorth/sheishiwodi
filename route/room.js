@@ -370,7 +370,10 @@ var writeRoom = function(req,res,result) {
 	var str = "";
 	for(var i in roomName)
 		str += i + "\n";
-	res.sendText(str);
+	if(str)
+		res.sendText(str);
+	else
+		res.sendText("没有房间,自己创建一个吧")
 }
 
 
