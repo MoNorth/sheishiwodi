@@ -122,9 +122,11 @@ var speak = function(roomname) {
 			}
 			wechat.createSession({fromusername : game[roomname][num]},function(req,res,body) {
 				res.sendText("发送成功");
-				wechat.active(game[roomname],beginGame[roomname]["rname"][num] + ": " + body.content,function() {});
-				beginGame[roomname]["now"] = num + 1;
-				speak(roomname);
+				wechat.active(game[roomname],beginGame[roomname]["rname"][num] + ": " + body.content,function() {
+					beginGame[roomname]["now"] = num + 1;
+					speak(roomname);
+				},true);
+				
 			})
 		})
 	}
@@ -307,14 +309,23 @@ var beginGame = function(req,res,result) {
 		res.sendText("你还没有加入房间或房间已开始游戏");
 		return;
 	}
-	res.sendText("开始游戏");
+	if(name !== roomname)
+	{
+		res.sendText("您不是房主,不能开始游戏");
+		return;
+	}
+	res.send("");
 	game[roomname] = room[roomname];
 	delete room[roomname];
 	beginGame[roomname] = {};
 	beginGame[roomname]["rname"] = [];
 	beginGame[roomname]["now"] = 0;
 	//轮流写出自己的花名
-	setrname(roomname);
+	//
+	wechat.active(game[roomname],"游戏开始",function() {
+		setrname(roomname);
+	},true);
+	
 	//给这个人发该0号人了,创建session
 	//一圈结束,开始指认
 	//指认成功,游戏结束
