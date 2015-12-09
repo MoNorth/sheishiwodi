@@ -26,7 +26,9 @@ var createRoom = function(req,res,result) {
 			res.sendText("快把你的房间名 " + roomHName + ",推荐给朋友吧");
 			roomName[roomHName] = body.fromusername;
 			roomName[body.fromusername] = roomHName;
+			console.log(body.fromusername + "成立了房间" + roomHName);
 		})
+
 		
 	}
 }
@@ -174,6 +176,7 @@ var isEnd = function(roomname,toupiaoname) {
 		wechat.active(game[roomname],"游戏结束,卧底是"+nameM.name,function() {});
 		delete game[roomname];
 		delete beginGame[roomname];
+		console.log(roomname + "的游戏结束");
 	}
 	else
 	{
@@ -189,6 +192,7 @@ var isEnd = function(roomname,toupiaoname) {
 			wechat.active(game[roomname],"游戏结束,卧底是"+beginGame[roomname]["wodi"],function() {});
 			delete game[roomname];
 			delete beginGame[roomname];
+			console.log(roomname + "的游戏结束");
 		}
 		else
 		{
@@ -347,6 +351,7 @@ var beginGame = function(req,res,result) {
 	beginGame[roomname] = {};
 	beginGame[roomname]["rname"] = [];
 	beginGame[roomname]["now"] = 0;
+	console.log(roomname + "的游戏开始");
 	//轮流写出自己的花名
 	//
 	wechat.active(game[roomname],"游戏开始",function() {
