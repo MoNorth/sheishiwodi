@@ -1,8 +1,16 @@
 var room = {};
 var game = {};
 var beginGame = {};
+var roomName = {};
 var wechat = require("wechat-node");
 var words = require("./words");
+
+var hasRoomName = function(name) {
+	return name in roomName;
+}
+
+
+
 var createRoom = function(req,res,result) {
 	var name = result.fromusername;
 	var roomname = hasRoom(name);
@@ -11,8 +19,15 @@ var createRoom = function(req,res,result) {
 		res.sendText("您已经在房间 " + roomname || gamename);
 	else
 	{
+		res.sendText("房间新建成功,请给房间起个花名");
 		room[name] = [name];
-		res.sendText("新建的房间名为: " + name);
+		wechat.createSession(result,function(req,res,body) {
+			var roomHName = body.content;
+			res.sendText("快把你的房间名 " + roomHName + ",推荐给朋友吧");
+			roomName[roomHName] = body.fromusername;
+			roomName[body.fromusername] = roomHName;
+		})
+		
 	}
 }
 
@@ -43,10 +58,10 @@ var hasGame = function(name) {
 
 var setinRoom = function(req,res,result) {
 	var roomname = result.content;
-	if(roomname in room)
+	if(roomname in roomName)
 	{
 		res.sendText("加入成功");
-		room[roomname].push(result.fromusername);
+		room[roomName[roomname]].push(result.fromusername);
 	}
 	else
 	{
@@ -63,7 +78,7 @@ var joinRoom = function(req,res,result) {
 		res.sendText("您已经在房间 " + roomname || gamename);
 	else
 	{
-		res.sendText("请输入房间号");
+		res.sendText("请输入房间花名");
 		wechat.createSession(result,setinRoom);
 	}
 }
@@ -307,6 +322,8 @@ var setrname = function(roomname) {
 
 
 
+
+
 var beginGame = function(req,res,result) {
 	var name = result.fromusername;
 	var roomname = hasRoom(name);
@@ -321,6 +338,8 @@ var beginGame = function(req,res,result) {
 		return;
 	}
 	res.send("");
+	delete roomName[roomName[name]];
+	delete roomName[name];
 	game[roomname] = room[roomname];
 	delete room[roomname];
 	beginGame[roomname] = {};
