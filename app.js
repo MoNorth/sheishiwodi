@@ -4,9 +4,9 @@ var wechat_node = require("wechat-node");
 var wechat = new wechat_node(app,"wx2d99e56a3326b348","d4624c36b6795d1d99dcf0547af5443d","northk");
 var room = require("./route/room");
 
-// wechat.use("setMenu",function(ok,result) {
-// 	console.log(result);
-// })
+wechat.use("setMenu",function(ok,result) {
+	console.log(result);
+})
 
 
 wechat.use("postData");
