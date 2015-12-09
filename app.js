@@ -22,7 +22,8 @@ wechat.reclick({
 	"setin_room" : room.joinRoom,
 	"setout_room" : room.outRoom,
 	"begin_game" : room.beginGame,
-	"write_room" : room.writeRoom
+	"write_room" : room.writeRoom,
+	"pnum_room" : room.pNumRoom
 },"");
 
 

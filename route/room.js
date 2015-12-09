@@ -377,8 +377,21 @@ var writeRoom = function(req,res,result) {
 }
 
 
+var pNumRoom = function(req,res,result) {	
+	var name = result.fromusername;
+	var roomname = hasRoom(name);
+	var gameroom = hasGame(name);
+	if(roomname)
+		res.sendText("您现在的房间有 : " + room[roomname].length + "人");
+	else if(gameroom)
+		res.sendText("您的房间已经开始游戏,还有 " + game[gameroom].length + "人");
+	else
+		res.sendText("您还没有加入房间");
+}
+
 exports.createRoom = createRoom;
 exports.joinRoom = joinRoom;
 exports.outRoom = outRoom;
 exports.beginGame = beginGame;
 exports.writeRoom = writeRoom;
+exports.pNumRoom = pNumRoom;
