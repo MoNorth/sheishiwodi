@@ -264,7 +264,7 @@ var pwordsfun =  function(roomname,rom,pnum) {
 			w = words[rom][1];
 		else
 			w = words[rom][0];
-		wechat.active(game[roomname][num],w,function(ok,result) {
+		wechat.active(game[roomname][num],"你的卡片内容是 : " + w,function(ok,result) {
 			if(!ok)
 			{
 				console.log("特别大的error");
@@ -356,7 +356,6 @@ var beginGame = function(req,res,result) {
 	//轮流写出自己的花名
 	//
 	wechat.active(game[roomname],"游戏开始",function() {
-		console.log("莱昂次");
 		setrname(roomname);
 	},true);
 	
