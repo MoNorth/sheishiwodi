@@ -356,6 +356,7 @@ var beginGame = function(req,res,result) {
 	//轮流写出自己的花名
 	//
 	wechat.active(game[roomname],"游戏开始",function() {
+		console.log("莱昂次");
 		setrname(roomname);
 	},true);
 	
